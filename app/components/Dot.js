@@ -5,14 +5,16 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+let start = false;
+
 const Circle = ({x, y, bgColor}) => {
 	let circleStyle = {
       padding:10,
       margin:20,
       backgroundColor: bgColor,
       borderRadius: "50%",
-      width:100,
-      height:100,
+      width:10,
+      height:10,
       position: "absolute",
       top: x,
       left: y
