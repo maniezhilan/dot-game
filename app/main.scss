@@ -1,0 +1,18 @@
+$primaryColor: #eeccff;
+
+body {
+  $primaryColor: #ccc;
+  background: $primaryColor;
+}
+
+h1 {
+	color: cyan;
+}
+
+p {
+  color: $primaryColor;
+}
+
+#container {
+	background: $primaryColor;
+}
