@@ -195,8 +195,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Cricle, 'Cricle', '/Users/mani/code/github/coding-interview/dot-game/app/components/Circle.js');
-  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Circle.js');
+  reactHotLoader.register(Cricle, 'Cricle', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Circle.js');
+  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Circle.js');
   leaveModule(module);
 })();
 
@@ -248,7 +248,6 @@ var Dot = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Dot.__proto__ || Object.getPrototypeOf(Dot)).call(this, props));
 
     _this.state = { circleStyle: {} };
-
     return _this;
   }
 
@@ -274,18 +273,13 @@ var Dot = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      console.log(this.props.play);
-      //if (this.props.play){
-
       this.interval = setInterval(function () {
         var size = Math.floor(Math.random() * Math.floor(100));
         var x = 0;
         var y = Math.floor(Math.random() * Math.floor(800));
         var style = _this2.circle(x, y, '#1C89BF', size);
-        console.log('drop', style);
         _this2.setState({ circleStyle: style });
       }, 1000);
-      //}
     }
   }, {
     key: "componentWillUnmount",
@@ -319,8 +313,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Dot, "Dot", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
-  reactHotLoader.register(_default, "default", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
+  reactHotLoader.register(Dot, "Dot", "/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js");
+  reactHotLoader.register(_default, "default", "/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js");
   leaveModule(module);
 })();
 
@@ -371,49 +365,46 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Toggle = function (_React$Component) {
-  _inherits(Toggle, _React$Component);
+var Toggle = function (_Component) {
+  _inherits(Toggle, _Component);
 
   function Toggle(props) {
     _classCallCheck(this, Toggle);
 
     var _this = _possibleConstructorReturn(this, (Toggle.__proto__ || Object.getPrototypeOf(Toggle)).call(this, props));
 
-    _this.state = { play: false };
+    _this.state = { isToggleOn: false };
+    _this.buttonClick = _this.buttonClick.bind(_this);
     return _this;
   }
 
   _createClass(Toggle, [{
+    key: 'buttonClick',
+    value: function buttonClick() {
+      this.setState(function (prevState) {
+        return {
+          isToggleOn: !prevState.isToggleOn
+        };
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      if (this.state.play) {
-        return _react2.default.createElement(_Dot2.default, {
-          play: this.state.play,
-          onExit: function onExit() {
-            return _this2.setState({ play: null });
-          }
-        });
-      } else {
-        return _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.setState({ play: true });
-              } },
-            'Start'
-          ),
-          _react2.default.createElement('br', null)
-        );
-      }
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'button',
+          { onClick: this.buttonClick },
+          this.state.isToggleOn ? 'Stop' : 'Start'
+        ),
+        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn }) : ''
+      );
     }
   }]);
 
   return Toggle;
-}(_react2.default.Component);
+}(_react.Component);
 
 var _default = Toggle;
 exports.default = _default;
@@ -428,8 +419,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Toggle, 'Toggle', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
-  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(Toggle, 'Toggle', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
   leaveModule(module);
 })();
 
@@ -514,7 +505,7 @@ var App = function (_React$Component) {
     return;
   }
 
-  reactHotLoader.register(App, 'App', '/Users/mani/code/github/coding-interview/dot-game/app/index.jsx');
+  reactHotLoader.register(App, 'App', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/index.jsx');
   leaveModule(module);
 })();
 

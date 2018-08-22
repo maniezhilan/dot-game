@@ -1,25 +1,28 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Dot from './Dot';
 import Circle from './Circle';
 
-export default class Toggle extends React.Component {
+export default class Toggle extends Component {
   constructor(props) {
     super(props);
-    this.state = {play: false};
+    this.state = {isToggleOn: false};
+    this.buttonClick = this.buttonClick.bind(this);
+  }
+
+  buttonClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
   }
 
   render() {
-    if (this.state.play) {
-      return <Dot
-               play={this.state.play}
-               onExit={() => this.setState({play:null})}
-               />
-    } else {
       return (
         <div>
-          <button onClick={() => this.setState({play:true})}  >Start</button><br/>
+        <button onClick={this.buttonClick}>
+          {this.state.isToggleOn ? 'Stop' : 'Start'}
+        </button>
+          {this.state.isToggleOn ? <Dot isToggleOn={this.state.isToggleOn}/> : '' }
         </div>
       )
-    }
   }
 }
