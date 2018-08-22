@@ -1,47 +1,55 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
+export default class Dot extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {circleStyle : {}}
 
-let start = false;
+  }
 
-const Circle = ({x, y, bgColor}) => {
-	let circleStyle = {
-      padding:10,
-      margin:20,
-      backgroundColor: bgColor,
-      borderRadius: "50%",
-      width:10,
-      height:10,
-      position: "absolute",
-      top: x,
-      left: y
-    };
-
-
-	return (
-      <div style={circleStyle}>
-      </div>
-    );
-}
-
-const Dot = () => {
-
-	let colors = ["#393E41", "#E94F37", "#1C89BF", "#A1D363",
-                 "#85FFC7", "#297373", "#FF8552", "#A40E4C"];
-	let renderData = [];
-
-	for (let i = 0; i < colors.length; i++) {
-	  let color = colors[i];
-	  renderData.push(<Circle key={i + color} bgColor={color} x={0} y={getRandomInt(1200)} />);
+  circle(x, y, bgColor, size){
+		return {
+	      padding:10,
+	      margin:20,
+	      backgroundColor: bgColor,
+	      borderRadius: "50%",
+	      width:size,
+	      height:size,
+	      position: "absolute",
+	      top: x,
+	      left: y,
+	      animationDuration: '5s', //TODO: Driven by slider value
+	  	  animationName: 'slidein',
+	    }
 	}
-	return (
-		<div>
-			{renderData}
-		</div>
-	)
-}
 
-export default Dot
+  componentDidMount() {
+
+
+  	console.log(this.props.play);
+  	//if (this.props.play){
+
+	    this.interval = setInterval(() => {
+	    	let size = Math.floor(Math.random() * Math.floor(100));
+  			let x = 0;
+  			let y = Math.floor(Math.random() * Math.floor(800));
+	    	let style = this.circle(x,y,'#1C89BF',size)
+	    	console.log('drop', style);
+	        this.setState({circleStyle: style });
+
+	    }, 1000);
+	//}
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    return (
+      <div>
+        <div style={this.state.circleStyle}/>
+      </div>
+    )
+  }
+}

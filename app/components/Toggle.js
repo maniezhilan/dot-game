@@ -1,28 +1,25 @@
-class Toggle extends React.Component {
+import React from 'react';
+import Dot from './Dot';
+import Circle from './Circle';
+
+export default class Toggle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isToggleOn: true};
-
-    // This binding is necessary to make `this` work in the callback
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.setState(prevState => ({
-      isToggleOn: !prevState.isToggleOn
-    }));
+    this.state = {play: false};
   }
 
   render() {
-    return (
-      <button onClick={this.handleClick}>
-        {this.state.isToggleOn ? 'Start' : 'Pause'}
-      </button>
-    );
+    if (this.state.play) {
+      return <Dot
+               play={this.state.play}
+               onExit={() => this.setState({play:null})}
+               />
+    } else {
+      return (
+        <div>
+          <button onClick={() => this.setState({play:true})}  >Start</button><br/>
+        </div>
+      )
+    }
   }
 }
-
-ReactDOM.render(
-  <Toggle />,
-  document.getElementById('root')
-);
