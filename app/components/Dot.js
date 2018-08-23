@@ -6,7 +6,7 @@ export default class Dot extends Component {
     this.state = {circleStyle : {}}
   }
 
-  circle(x, y, bgColor, size){
+  circle(x, y, bgColor, size, speed){
 		return {
 	      padding:10,
 	      margin:20,
@@ -17,7 +17,7 @@ export default class Dot extends Component {
 	      position: "absolute",
 	      top: x,
 	      left: y,
-	      animationDuration: '5s', //TODO: Driven by slider value
+	      animationDuration: speed+'s', 
 	  	  animationName: 'slidein',
 	    }
 	}
@@ -27,7 +27,8 @@ export default class Dot extends Component {
 	    	let size = Math.floor(Math.random() * Math.floor(100));
   			let x = 0;
   			let y = Math.floor(Math.random() * Math.floor(800));
-	    	let style = this.circle(x,y,'#1C89BF',size)
+  			let speed = this.props.speed;
+	    	let style = this.circle(x,y,'#1C89BF',size,speed);
 	        this.setState({circleStyle: style });
 
 	    }, 1000);
@@ -41,6 +42,7 @@ export default class Dot extends Component {
     return (
       <div>
         <div style={this.state.circleStyle}/>
+        //TODO: Burst the dot with clickhandler.
       </div>
     )
   }

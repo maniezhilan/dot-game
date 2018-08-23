@@ -21,6 +21,9 @@ const config = {
     path: BUILD_DIR,
     filename: 'bundle.js'
   },
+  resolve: {
+    extensions: ['.css', '.js', '.jsx']
+  },
 	module : {
 		 rules : [
 				{
@@ -28,11 +31,11 @@ const config = {
 					include: APP_DIR,
 					loader: 'babel-loader',
 					query: {
-						presets: ['es2015', 'react']
+						presets: ['es2015']
 					}
 				},
 				{
-		            test: /\.scss$/,
+		            test: [/\.scss$/,/\.css$/],
 		            use:  [MiniCssExtractPlugin.loader,
                     { loader: 'css-loader', options: { url: false, sourceMap: true } },
                     { loader: 'sass-loader', options: { sourceMap: true } }]
