@@ -30,9 +30,8 @@ export default class SpeedSlider extends Component {
 
   render () {
     const { value } = this.state
-    if(!this.props.disabled){
     return (
-      <div className='slider'>
+      <div className='slider' style={{pointerEvents: this.props.disabled ? 'none': ''}}>
         <Slider
           min={0}
           max={100}
@@ -44,8 +43,5 @@ export default class SpeedSlider extends Component {
         <div className='value'>{value}</div>
       </div>
     )
-    }else{
-       return '';
-    }
   }
 }

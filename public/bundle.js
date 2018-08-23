@@ -283,27 +283,23 @@ var SpeedSlider = function (_Component) {
     value: function render() {
       var value = this.state.value;
 
-      if (!this.props.disabled) {
-        return _react2.default.createElement(
+      return _react2.default.createElement(
+        'div',
+        { className: 'slider', style: { pointerEvents: this.props.disabled ? 'none' : '' } },
+        _react2.default.createElement(_reactRangeslider2.default, {
+          min: 0,
+          max: 100,
+          value: value,
+          onChangeStart: this.handleChangeStart.bind(this),
+          onChange: this.handleChange.bind(this),
+          onChangeComplete: this.handleChangeComplete.bind(this)
+        }),
+        _react2.default.createElement(
           'div',
-          { className: 'slider' },
-          _react2.default.createElement(_reactRangeslider2.default, {
-            min: 0,
-            max: 100,
-            value: value,
-            onChangeStart: this.handleChangeStart.bind(this),
-            onChange: this.handleChange.bind(this),
-            onChangeComplete: this.handleChangeComplete.bind(this)
-          }),
-          _react2.default.createElement(
-            'div',
-            { className: 'value' },
-            value
-          )
-        );
-      } else {
-        return '';
-      }
+          { className: 'value' },
+          value
+        )
+      );
     }
   }]);
 
