@@ -114,6 +114,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -128,7 +130,10 @@ var Dot = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Dot.__proto__ || Object.getPrototypeOf(Dot)).call(this, props));
 
-    _this.state = { circleStyle: {} };
+    _this.state = { circleStyle: {},
+      circles: []
+    };
+    _this.handleDotClick = _this.handleDotClick.bind(_this);
     return _this;
   }
 
@@ -150,6 +155,14 @@ var Dot = function (_Component) {
       };
     }
   }, {
+    key: "circles",
+    value: function circles() {
+      this.setState({
+        circles: [].concat(_toConsumableArray(this.state.circles), [this.state.circleStyle])
+      });
+      console.log(this.state.circles);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
@@ -159,8 +172,10 @@ var Dot = function (_Component) {
         var x = 0;
         var y = Math.floor(Math.random() * Math.floor(800));
         var speed = _this2.props.speed;
-        var style = _this2.circle(x, y, '#1C89BF', size, speed);
+        var color = '#1C89BF';
+        var style = _this2.circle(x, y, '#1C89BF', size, speed); //TODO: use the size to increase counter
         _this2.setState({ circleStyle: style });
+        _this2.circles();
       }, 1000);
     }
   }, {
@@ -169,13 +184,22 @@ var Dot = function (_Component) {
       clearInterval(this.interval);
     }
   }, {
+    key: "handleDotClick",
+    value: function handleDotClick(event) {
+      event.target.style.display = 'none';
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement("div", { style: this.state.circleStyle }),
-        "//TODO: Burst the dot with clickhandler."
+        this.state.circles.map(function (style, i) {
+          return _react2.default.createElement("div", { key: i, style: style, onClick: _this3.handleDotClick });
+        }),
+        "//TODO: Burst the dot with clickhandler. //TODO: Update counter when clicked based on size"
       );
     }
   }]);
@@ -418,7 +442,6 @@ var Toggle = function (_Component) {
           { onClick: this.buttonClick },
           this.state.isToggleOn ? 'Stop' : 'Start'
         ),
-        '//TODO: Disable slider when the play button is On',
         _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange, disabled: this.state.isToggleOn }),
         this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild }) : ''
       );

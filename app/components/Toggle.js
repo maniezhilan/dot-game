@@ -33,7 +33,6 @@ export default class Toggle extends Component {
         <button onClick={this.buttonClick}>
           {this.state.isToggleOn ? 'Stop' : 'Start'}
         </button>
-        //TODO: Disable slider when the play button is On
         <SpeedSlider handlerFromParant={this.handleChange} disabled={this.state.isToggleOn}/>
         {this.state.isToggleOn ? <Dot isToggleOn={this.state.isToggleOn} speed={this.state.fromChild}/> : '' }
         </div>
