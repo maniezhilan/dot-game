@@ -139,13 +139,6 @@ var Dot = function (_Component) {
   }
 
   _createClass(Dot, [{
-    key: "getRandomInt",
-    value: function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-  }, {
     key: "circle",
     value: function circle(x, y, bgColor, size, speed, playState) {
       return {
@@ -167,25 +160,25 @@ var Dot = function (_Component) {
       };
     }
   }, {
+    key: "createStyle",
+    value: function createStyle() {
+      var width = document.getElementById('app').clientWidth;
+      var sizeVariant = width < 390 ? 10 : 100;
+      var size = Math.floor(Math.random() * sizeVariant + 1);
+      var x = 120;
+      var y = Math.floor(Math.random() * Math.floor(width - size));
+      var speed = this.props.speed === '' ? '10s' : this.props.speed + 's';
+      var color = '#1C89BF';
+      var playState = this.props.isToggleOn ? 'running' : 'paused';
+      return this.circle(x, y, '#1C89BF', size, speed, playState);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
 
       this.interval = setInterval(function () {
-        var width = document.getElementById('app').clientWidth;
-        console.log('width---', width);
-        var sizeVariant = width < 390 ? 25 : 50;
-        console.log('sizeVariant---', sizeVariant);
-        var size = Math.floor(Math.random() * sizeVariant + 1);
-
-        var x = 120;
-
-        var y = Math.floor(Math.random() * Math.floor(width - size));
-        var speed = _this2.props.speed === '' ? '10s' : _this2.props.speed + 's';
-        var color = '#1C89BF';
-        console.log('size---', size);
-        var playState = _this2.props.isToggleOn ? 'running' : 'paused';
-        var style = _this2.circle(x, y, '#1C89BF', size, speed, playState);
+        var style = _this2.createStyle();
         _this2.setState({ circleStyle: style });
         _this2.setState({
           circles: [].concat(_toConsumableArray(_this2.state.circles), [_this2.state.circleStyle])
@@ -200,9 +193,12 @@ var Dot = function (_Component) {
   }, {
     key: "showScore",
     value: function showScore(event) {
+      var size = parseInt(event.target.style.width, 10);
+      var score = Math.ceil(Math.abs(1 / size * 100));
+      console.log('score---', score);
       this.setState(function (prevState) {
         return {
-          counter: prevState.counter + 1
+          counter: prevState.counter + score
         };
       });
       this.props.total(this.state.counter);
@@ -475,17 +471,17 @@ var Toggle = function (_Component) {
         { className: 'wrapper' },
         _react2.default.createElement(
           'div',
-          { className: 'a' },
+          { className: 'col1-row1' },
           _react2.default.createElement(
             'div',
-            { className: 'btn btn-green' },
+            { className: 'btn btn-yellow' },
             ' Score: ',
             this.state.total
           )
         ),
         _react2.default.createElement(
           'div',
-          { 'class': 'b' },
+          { className: 'col2-row1' },
           _react2.default.createElement(
             'button',
             { className: this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green', onClick: this.buttonClick },
@@ -494,10 +490,10 @@ var Toggle = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'c' },
+          { className: 'row2' },
           _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange })
         ),
-        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { className: 'd', isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
+        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { className: 'row3', isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
       );
     }
   }]);

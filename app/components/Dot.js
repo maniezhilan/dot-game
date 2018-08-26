@@ -10,12 +10,6 @@ export default class Dot extends Component {
     this.showScore = this.showScore.bind(this);
   }
 
-  getRandomInt(min, max) {
-	  min = Math.ceil(min);
-	  max = Math.floor(max);
-	  return Math.floor(Math.random() * (max - min)) + min;
-	}
-
   circle(x, y, bgColor, size, speed, playState){
 		return {
 	      padding:10,
@@ -36,22 +30,21 @@ export default class Dot extends Component {
 	    }
 	}
 
-  componentDidMount() {
-	    this.interval = setInterval(() => {
-    	let width = document.getElementById('app').clientWidth;
-    	console.log('width---',width);
-    	let sizeVariant = (width < 390 ? 25 : 50);
-    	console.log('sizeVariant---',sizeVariant);
+	createStyle(){
+		let width = document.getElementById('app').clientWidth;
+    	let sizeVariant = (width < 390 ? 10 : 100);
     	let size = Math.floor((Math.random()*sizeVariant) + 1);
-
 		let x = 120;
-
 		let y = Math.floor(Math.random() * Math.floor(width-size));
 		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
 		let color = '#1C89BF';
-		console.log('size---',size);
 		let playState = (this.props.isToggleOn ? 'running' : 'paused');
-	    let style = this.circle(x, y, '#1C89BF', size, speed, playState);
+		return this.circle(x, y, '#1C89BF', size, speed, playState);
+	}
+
+  componentDidMount() {
+	    this.interval = setInterval(() => {
+    	let style = this.createStyle();
 	    this.setState({circleStyle: style });
 	    this.setState({
   			circles: [...this.state.circles,this.state.circleStyle]
@@ -67,8 +60,11 @@ export default class Dot extends Component {
 
 
   showScore(event) {
+  	let size = parseInt(event.target.style.width, 10);
+  	let score = Math.ceil(Math.abs(1/size*100));
+  	console.log('score---',score);
   	this.setState(prevState => ({
-      counter: prevState.counter + 1
+      counter: prevState.counter + score
     }));
   	this.props.total(this.state.counter);
   	event.target.style.display = 'none';

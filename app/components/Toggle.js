@@ -37,19 +37,19 @@ export default class Toggle extends Component {
   render() {
       return (
         <div className='wrapper'>
-            <div className='a'>
-            	<div className='btn btn-green'> Score: {this.state.total}
+            <div className='col1-row1'>
+            	<div className='btn btn-yellow'> Score: {this.state.total}
             	</div>
             </div>
-            <div class='b'>
+            <div className='col2-row1'>
 	            <button className={this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green'} onClick={this.buttonClick}>
 	              {this.state.isToggleOn ? 'Stop' : 'Start'}
 	            </button>
             </div>
-            <div className='c'>
+            <div className='row2'>
             	<SpeedSlider handlerFromParant={this.handleChange}/>
             </div>
-            {this.state.isToggleOn ? <Dot className='d' isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
+            {this.state.isToggleOn ? <Dot className='row3' isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
         </div>
       )
   }
