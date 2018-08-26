@@ -6,7 +6,7 @@ import SpeedSlider from '../app/components/SpeedSlider';
 
 class App extends React.Component {
   render () {
-    return <div> <Toggle/> 
+    return <div> <Toggle/>
     </div>;
   }
 }

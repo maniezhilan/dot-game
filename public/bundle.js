@@ -139,6 +139,13 @@ var Dot = function (_Component) {
   }
 
   _createClass(Dot, [{
+    key: "getRandomInt",
+    value: function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+  }, {
     key: "circle",
     value: function circle(x, y, bgColor, size, speed, playState) {
       return {
@@ -165,12 +172,18 @@ var Dot = function (_Component) {
       var _this2 = this;
 
       this.interval = setInterval(function () {
-        var size = Math.floor(Math.random() * Math.floor(100));
-        var x = 152;
-        var y = Math.floor(Math.random() * Math.floor(800));
+        var width = document.getElementById('app').clientWidth;
+        console.log('width---', width);
+        var sizeVariant = width < 390 ? 25 : 50;
+        console.log('sizeVariant---', sizeVariant);
+        var size = Math.floor(Math.random() * sizeVariant + 1);
+
+        var x = 120;
+
+        var y = Math.floor(Math.random() * Math.floor(width - size));
         var speed = _this2.props.speed === '' ? '10s' : _this2.props.speed + 's';
         var color = '#1C89BF';
-        console.log('speed', speed);
+        console.log('size---', size);
         var playState = _this2.props.isToggleOn ? 'running' : 'paused';
         var style = _this2.circle(x, y, '#1C89BF', size, speed, playState);
         _this2.setState({ circleStyle: style });
@@ -226,8 +239,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Dot, "Dot", "/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js");
-  reactHotLoader.register(_default, "default", "/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js");
+  reactHotLoader.register(Dot, "Dot", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
+  reactHotLoader.register(_default, "default", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
   leaveModule(module);
 })();
 
@@ -358,8 +371,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(SpeedSlider, 'SpeedSlider', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/SpeedSlider.js');
-  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/SpeedSlider.js');
+  reactHotLoader.register(SpeedSlider, 'SpeedSlider', '/Users/mani/code/github/coding-interview/dot-game/app/components/SpeedSlider.js');
+  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/SpeedSlider.js');
   leaveModule(module);
 })();
 
@@ -459,28 +472,32 @@ var Toggle = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'wrapper' },
         _react2.default.createElement(
-          'header',
-          null,
+          'div',
+          { className: 'a' },
           _react2.default.createElement(
             'div',
-            null,
+            { className: 'btn btn-green' },
             ' Score: ',
             this.state.total
-          ),
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { 'class': 'b' },
           _react2.default.createElement(
             'button',
-            { 'class': this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green', onClick: this.buttonClick },
+            { className: this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green', onClick: this.buttonClick },
             this.state.isToggleOn ? 'Stop' : 'Start'
           )
         ),
         _react2.default.createElement(
           'div',
-          { 'class': 'container' },
-          _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange }),
-          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
-        )
+          { className: 'c' },
+          _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange })
+        ),
+        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { className: 'd', isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
       );
     }
   }]);
@@ -501,8 +518,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Toggle, 'Toggle', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
-  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(Toggle, 'Toggle', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
   leaveModule(module);
 })();
 
@@ -591,7 +608,7 @@ var App = function (_React$Component) {
     return;
   }
 
-  reactHotLoader.register(App, 'App', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/index.jsx');
+  reactHotLoader.register(App, 'App', '/Users/mani/code/github/coding-interview/dot-game/app/index.jsx');
   leaveModule(module);
 })();
 

@@ -36,21 +36,21 @@ export default class Toggle extends Component {
 
   render() {
       return (
-        <div>
-         <header>  
-            <div> Score: {this.state.total}</div>
-            <button class={this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green'} onClick={this.buttonClick}>
-              {this.state.isToggleOn ? 'Stop' : 'Start'}
-            </button>
-            
-         </header>   
-           
-        <div class="container"> 
-                <SpeedSlider handlerFromParant={this.handleChange}/>
-                {this.state.isToggleOn ? <Dot isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
+        <div className='wrapper'>
+            <div className='a'>
+            	<div className='btn btn-green'> Score: {this.state.total}
+            	</div>
+            </div>
+            <div class='b'>
+	            <button className={this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green'} onClick={this.buttonClick}>
+	              {this.state.isToggleOn ? 'Stop' : 'Start'}
+	            </button>
+            </div>
+            <div className='c'>
+            	<SpeedSlider handlerFromParant={this.handleChange}/>
+            </div>
+            {this.state.isToggleOn ? <Dot className='d' isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
         </div>
-
-        </div> 
       )
   }
 }
