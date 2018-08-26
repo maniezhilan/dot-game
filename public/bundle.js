@@ -168,9 +168,9 @@ var Dot = function (_Component) {
       var x = 120;
       var y = Math.floor(Math.random() * Math.floor(width - size));
       var speed = this.props.speed === '' ? '10s' : this.props.speed + 's';
-      var color = '#1C89BF';
+      var color = '#' + Math.random().toString(16).slice(-6);
       var playState = this.props.isToggleOn ? 'running' : 'paused';
-      return this.circle(x, y, '#1C89BF', size, speed, playState);
+      return this.circle(x, y, color, size, speed, playState);
     }
   }, {
     key: "componentDidMount",
@@ -195,7 +195,6 @@ var Dot = function (_Component) {
     value: function showScore(event) {
       var size = parseInt(event.target.style.width, 10);
       var score = Math.ceil(Math.abs(1 / size * 100));
-      console.log('score---', score);
       this.setState(function (prevState) {
         return {
           counter: prevState.counter + score
@@ -493,7 +492,11 @@ var Toggle = function (_Component) {
           { className: 'row2' },
           _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange })
         ),
-        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { className: 'row3', isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
+        _react2.default.createElement(
+          'div',
+          { className: 'row3' },
+          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
+        )
       );
     }
   }]);

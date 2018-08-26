@@ -37,9 +37,9 @@ export default class Dot extends Component {
 		let x = 120;
 		let y = Math.floor(Math.random() * Math.floor(width-size));
 		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
-		let color = '#1C89BF';
+		let color = '#'+Math.random().toString(16).slice(-6)
 		let playState = (this.props.isToggleOn ? 'running' : 'paused');
-		return this.circle(x, y, '#1C89BF', size, speed, playState);
+		return this.circle(x, y, color, size, speed, playState);
 	}
 
   componentDidMount() {
@@ -62,7 +62,6 @@ export default class Dot extends Component {
   showScore(event) {
   	let size = parseInt(event.target.style.width, 10);
   	let score = Math.ceil(Math.abs(1/size*100));
-  	console.log('score---',score);
   	this.setState(prevState => ({
       counter: prevState.counter + score
     }));
