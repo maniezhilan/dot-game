@@ -131,15 +131,16 @@ var Dot = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Dot.__proto__ || Object.getPrototypeOf(Dot)).call(this, props));
 
     _this.state = { circleStyle: {},
-      circles: []
+      circles: [],
+      counter: 1
     };
-    _this.handleDotClick = _this.handleDotClick.bind(_this);
+    _this.showScore = _this.showScore.bind(_this);
     return _this;
   }
 
   _createClass(Dot, [{
     key: "circle",
-    value: function circle(x, y, bgColor, size, speed) {
+    value: function circle(x, y, bgColor, size, speed, playState) {
       return {
         padding: 10,
         margin: 20,
@@ -150,17 +151,13 @@ var Dot = function (_Component) {
         position: "absolute",
         top: x,
         left: y,
-        animationDuration: speed + 's',
-        animationName: 'slidein'
+        animationDuration: speed,
+        animationName: 'slidein',
+        animationTimingFunction: 'linear',
+        animationIterationCount: 'infinite',
+        animationDelay: '0s',
+        animationPlayState: playState
       };
-    }
-  }, {
-    key: "circles",
-    value: function circles() {
-      this.setState({
-        circles: [].concat(_toConsumableArray(this.state.circles), [this.state.circleStyle])
-      });
-      console.log(this.state.circles);
     }
   }, {
     key: "componentDidMount",
@@ -169,13 +166,17 @@ var Dot = function (_Component) {
 
       this.interval = setInterval(function () {
         var size = Math.floor(Math.random() * Math.floor(100));
-        var x = 0;
+        var x = 152;
         var y = Math.floor(Math.random() * Math.floor(800));
-        var speed = _this2.props.speed;
+        var speed = _this2.props.speed === '' ? '10s' : _this2.props.speed + 's';
         var color = '#1C89BF';
-        var style = _this2.circle(x, y, '#1C89BF', size, speed); //TODO: use the size to increase counter
+        console.log('speed', speed);
+        var playState = _this2.props.isToggleOn ? 'running' : 'paused';
+        var style = _this2.circle(x, y, '#1C89BF', size, speed, playState);
         _this2.setState({ circleStyle: style });
-        _this2.circles();
+        _this2.setState({
+          circles: [].concat(_toConsumableArray(_this2.state.circles), [_this2.state.circleStyle])
+        });
       }, 1000);
     }
   }, {
@@ -184,8 +185,14 @@ var Dot = function (_Component) {
       clearInterval(this.interval);
     }
   }, {
-    key: "handleDotClick",
-    value: function handleDotClick(event) {
+    key: "showScore",
+    value: function showScore(event) {
+      this.setState(function (prevState) {
+        return {
+          counter: prevState.counter + 1
+        };
+      });
+      this.props.total(this.state.counter);
       event.target.style.display = 'none';
     }
   }, {
@@ -197,9 +204,8 @@ var Dot = function (_Component) {
         "div",
         null,
         this.state.circles.map(function (style, i) {
-          return _react2.default.createElement("div", { key: i, style: style, onClick: _this3.handleDotClick });
-        }),
-        "//TODO: Burst the dot with clickhandler. //TODO: Update counter when clicked based on size"
+          return _react2.default.createElement("div", { key: i, style: style, onClick: _this3.showScore });
+        })
       );
     }
   }]);
@@ -277,10 +283,9 @@ var SpeedSlider = function (_Component) {
     var _this = _possibleConstructorReturn(this, (SpeedSlider.__proto__ || Object.getPrototypeOf(SpeedSlider)).call(this, props, context));
 
     _this.state = {
-      value: 10
+      value: 10,
+      reverseValue: 8
     };
-    _this.handleChangeStart = _this.handleChangeStart.bind();
-    _this.handleChangeComplete = _this.handleChangeComplete.bind();
     return _this;
   }
 
@@ -295,7 +300,14 @@ var SpeedSlider = function (_Component) {
       this.setState({
         value: value
       });
-      this.props.handlerFromParant(this.state.value);
+    }
+  }, {
+    key: 'handleChangeReverse',
+    value: function handleChangeReverse(value) {
+      this.setState({
+        reverseValue: value
+      });
+      this.props.handlerFromParant(this.state.reverseValue);
     }
   }, {
     key: 'handleChangeComplete',
@@ -305,23 +317,26 @@ var SpeedSlider = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var value = this.state.value;
+      var _state = this.state,
+          value = _state.value,
+          reverseValue = _state.reverseValue;
 
       return _react2.default.createElement(
         'div',
         { className: 'slider', style: { pointerEvents: this.props.disabled ? 'none' : '' } },
         _react2.default.createElement(_reactRangeslider2.default, {
-          min: 0,
-          max: 100,
-          value: value,
-          onChangeStart: this.handleChangeStart.bind(this),
-          onChange: this.handleChange.bind(this),
-          onChangeComplete: this.handleChangeComplete.bind(this)
+          min: 1,
+          max: 10,
+          value: reverseValue,
+          reverse: true,
+          onChange: this.handleChangeReverse.bind(this)
         }),
         _react2.default.createElement(
           'div',
           { className: 'value' },
-          value
+          'Speed : ',
+          reverseValue,
+          ' seconds'
         )
       );
     }
@@ -407,9 +422,11 @@ var Toggle = function (_Component) {
 
     _this.state = {
       isToggleOn: false,
-      fromChild: ''
+      fromChild: '',
+      total: 0
     };
     _this.handleChange = _this.handleChange.bind(_this);
+    _this.showScore = _this.showScore.bind(_this);
     _this.buttonClick = _this.buttonClick.bind(_this);
     return _this;
   }
@@ -420,7 +437,13 @@ var Toggle = function (_Component) {
       this.setState({
         fromChild: data
       });
-      console.log(this.state.fromChild);
+    }
+  }, {
+    key: 'showScore',
+    value: function showScore(score) {
+      this.setState({
+        total: score
+      });
     }
   }, {
     key: 'buttonClick',
@@ -438,12 +461,26 @@ var Toggle = function (_Component) {
         'div',
         null,
         _react2.default.createElement(
-          'button',
-          { onClick: this.buttonClick },
-          this.state.isToggleOn ? 'Stop' : 'Start'
+          'header',
+          null,
+          _react2.default.createElement(
+            'div',
+            null,
+            ' Score: ',
+            this.state.total
+          ),
+          _react2.default.createElement(
+            'button',
+            { 'class': this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green', onClick: this.buttonClick },
+            this.state.isToggleOn ? 'Stop' : 'Start'
+          )
         ),
-        _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange, disabled: this.state.isToggleOn }),
-        this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild }) : ''
+        _react2.default.createElement(
+          'div',
+          { 'class': 'container' },
+          _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange }),
+          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
+        )
       );
     }
   }]);

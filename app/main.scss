@@ -1,1 +1,103 @@
+body {
+ background : red;
+ margin: 0;
+ color: white;
+ display: grid;
+ grid-template-columns: 50% auto;
+ grid-template-rows: 30% 10% auto;
+ grid-template-areas:
+ "header"
+ "body"
+ "footer"
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+
+header {
+	//background: #FFFFFF;
+	padding: 1em;
+	grid-area: header;
+}
+
+.container {
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto;
+	padding: 4em 1em;
+	grid-area: body;
+}
+
+footer {
+	background: #571212;
+	grid-area: footer;
+}
+
+@media only screen and (max-width: 500px){
+	body {
+		grid-template-areas:
+		"header"
+		"body"
+		"footer"
+	}
+	.container {
+		grid-template-columns: 50% auto;
+		grid-template-rows: auto;
+	}
+}
+
+
+// @import url(https://fonts.googleapis.com/css?family=Poiret+One);
+
+// @mixin button-bg($bg) {
+//   background: $bg;
+//   &:hover {
+//     background:darken($bg,8%);
+//     transition: all 0.3s ease;
+//   }
+//   &:active {
+//     background:darken($bg,25%);
+//   } 
+// }
+
+// .btn {
+//  color:white;
+//  text-decoration:none;
+//  padding:5px 10px;
+//  border-radius:3px;
+//  font-family: 'Poiret One', cursive;
+//  font-size:2em;
+// }
+
+// .btn-green {
+//    @include button-bg(#2ecc71);
+// }
+
+// .btn-blue {
+//    @include button-bg(#3498db);
+// }
+
+// .btn-yellow{
+//    @include button-bg(#f1c40f);
+// }
+
+// .btn-red {
+//    @include button-bg(#e74c3c);
+// }
+
+// /*Other Stylez*/
+// .wrap {
+//   margin:0 auto;
+//   width:800px;
+//   text-align:center;
+// }
+
+// h1 {
+//   font-family: 'Poiret One', cursive;
+//   font-size:4em;
+// }
+
 

@@ -7,10 +7,9 @@ export default class SpeedSlider extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {
-      value: 10
+      value: 10,
+      reverseValue: 8
     }
-    this.handleChangeStart = this.handleChangeStart.bind();
-    this.handleChangeComplete = this.handleChangeComplete.bind();
   }
 
   handleChangeStart(){
@@ -21,26 +20,31 @@ export default class SpeedSlider extends Component {
     this.setState({
       value: value
     })
-    this.props.handlerFromParant(this.state.value);
   };
+
+  handleChangeReverse(value){
+    this.setState({
+      reverseValue: value
+    })
+    this.props.handlerFromParant(this.state.reverseValue);
+  }
 
   handleChangeComplete(){
     console.log('Change event completed')
   };
 
   render () {
-    const { value } = this.state
+    const { value, reverseValue } = this.state
     return (
       <div className='slider' style={{pointerEvents: this.props.disabled ? 'none': ''}}>
         <Slider
-          min={0}
-          max={100}
-          value={value}
-          onChangeStart={this.handleChangeStart.bind(this)}
-          onChange={this.handleChange.bind(this)}
-          onChangeComplete={this.handleChangeComplete.bind(this)}
+          min={1}
+          max={10}
+          value={reverseValue}
+          reverse={true}
+          onChange={this.handleChangeReverse.bind(this)}
         />
-        <div className='value'>{value}</div>
+        <div className='value'>Speed : {reverseValue} seconds</div>
       </div>
     )
   }

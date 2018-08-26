@@ -4,12 +4,13 @@ export default class Dot extends Component {
   constructor(props) {
     super(props);
     this.state = {circleStyle : {},
-		circles: []
+		circles: [], 
+		counter: 1
 	};
-    this.handleDotClick = this.handleDotClick.bind(this);
+    this.showScore = this.showScore.bind(this);
   }
 
-  circle(x, y, bgColor, size, speed){
+  circle(x, y, bgColor, size, speed, playState){
 		return {
 	      padding:10,
 	      margin:20,
@@ -20,36 +21,44 @@ export default class Dot extends Component {
 	      position: "absolute",
 	      top: x,
 	      left: y,
-	      animationDuration: speed+'s', 
+	      animationDuration: speed, 
 	  	  animationName: 'slidein',
+	  	  animationTimingFunction: 'linear',
+	  	  animationIterationCount: 'infinite',
+	  	  animationDelay: '0s',
+	  	  animationPlayState: playState
 	    }
 	}
-
-  circles(){
-  	this.setState({
-  		circles: [...this.state.circles,this.state.circleStyle]
-  	});
-  	console.log(this.state.circles);
-  }	
 
   componentDidMount() {
 	    this.interval = setInterval(() => {
     	let size = Math.floor(Math.random() * Math.floor(100));
-		let x = 0;
+		let x = 152;
 		let y = Math.floor(Math.random() * Math.floor(800));
-		let speed = this.props.speed;
+		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
 		let color = '#1C89BF';
-	    let style = this.circle(x,y,'#1C89BF',size,speed); //TODO: use the size to increase counter
+		console.log('speed',speed);
+		let playState = (this.props.isToggleOn ? 'running' : 'paused'); 
+	    let style = this.circle(x, y, '#1C89BF', size, speed, playState);
 	    this.setState({circleStyle: style });
-	    	this.circles();
+	    this.setState({
+  			circles: [...this.state.circles,this.state.circleStyle]
+  		});
 	    }, 1000);
+
   }
 
   componentWillUnmount() {
     	clearInterval(this.interval);
   }
 
-  handleDotClick(event) {
+
+
+  showScore(event) {
+  	this.setState(prevState => ({
+      counter: prevState.counter + 1
+    }));
+  	this.props.total(this.state.counter);
   	event.target.style.display = 'none';
   }
 
@@ -58,12 +67,9 @@ export default class Dot extends Component {
       <div>
       	{	
       		this.state.circles.map((style,i) => 
-        	<div key={i} style={style} onClick={this.handleDotClick}/>
+        	<div key={i} style={style} onClick={this.showScore}/>
     		)
     	}
-    	
-        //TODO: Burst the dot with clickhandler.
-        //TODO: Update counter when clicked based on size
       </div>
     )
   }

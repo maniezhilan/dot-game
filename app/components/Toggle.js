@@ -8,9 +8,11 @@ export default class Toggle extends Component {
     super(props);
     this.state = {
       isToggleOn: false,
-      fromChild: ''
+      fromChild: '',
+      total: 0
     };
     this.handleChange = this.handleChange.bind(this);
+    this.showScore = this.showScore.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
   }
 
@@ -18,7 +20,12 @@ export default class Toggle extends Component {
     this.setState({
       fromChild: data
     });
-    console.log(this.state.fromChild);
+  }
+
+  showScore(score) {
+    this.setState({
+      total: score
+    });
   }
 
   buttonClick() {
@@ -30,12 +37,20 @@ export default class Toggle extends Component {
   render() {
       return (
         <div>
-        <button onClick={this.buttonClick}>
-          {this.state.isToggleOn ? 'Stop' : 'Start'}
-        </button>
-        <SpeedSlider handlerFromParant={this.handleChange} disabled={this.state.isToggleOn}/>
-        {this.state.isToggleOn ? <Dot isToggleOn={this.state.isToggleOn} speed={this.state.fromChild}/> : '' }
+         <header>  
+            <div> Score: {this.state.total}</div>
+            <button class={this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green'} onClick={this.buttonClick}>
+              {this.state.isToggleOn ? 'Stop' : 'Start'}
+            </button>
+            
+         </header>   
+           
+        <div class="container"> 
+                <SpeedSlider handlerFromParant={this.handleChange}/>
+                {this.state.isToggleOn ? <Dot isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
         </div>
+
+        </div> 
       )
   }
 }
