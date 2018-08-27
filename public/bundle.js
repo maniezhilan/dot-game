@@ -112,10 +112,6 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -169,7 +165,7 @@ var Dot = function (_Component) {
       var width = document.getElementById('app').clientWidth;
       var sizeVariant = width < 390 ? 10 : 100;
       var size = Math.floor(Math.random() * sizeVariant + 1);
-      var x = 195;
+      var x = 120;
       var y = Math.floor(Math.random() * Math.floor(width - size));
       var speed = this.props.speed === '' ? '10s' : this.props.speed + 's';
       var color = '#' + Math.random().toString(16).slice(-6);
@@ -196,8 +192,8 @@ var Dot = function (_Component) {
     }
   }, {
     key: 'showScore',
-    value: function showScore(event) {
-      var size = parseInt(event.target.style.width, 10);
+    value: function showScore(style) {
+      var size = parseInt(style.width, 10);
       var score = Math.ceil(Math.abs(1 / size * 100));
       this.setState(function (prevState) {
         return {
@@ -205,10 +201,12 @@ var Dot = function (_Component) {
         };
       });
       this.props.total(this.state.counter);
-      event.target.style.display = 'none';
-      var mountNode = _reactDom2.default.findDOMNode(this.refs.dot);
-      console.log(mountNode);
-      var unmount = _reactDom2.default.unmountComponentAtNode(mountNode);
+      var newCircles = this.state.circles.filter(function (el) {
+        return el !== style;
+      });
+      this.setState({
+        circles: newCircles
+      });
     }
   }, {
     key: 'render',
@@ -219,7 +217,9 @@ var Dot = function (_Component) {
         'div',
         null,
         this.state.circles.map(function (style, i) {
-          return _react2.default.createElement('div', { key: i, style: style, onClick: _this3.showScore, ref: 'dot' });
+          return _react2.default.createElement('div', { key: i, style: style, onClick: function onClick() {
+              return _this3.showScore(style);
+            } });
         })
       );
     }

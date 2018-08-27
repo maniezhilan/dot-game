@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react'
 
 export default class Dot extends Component {
   constructor(props) {
@@ -35,7 +34,7 @@ export default class Dot extends Component {
 		let width = document.getElementById('app').clientWidth;
     	let sizeVariant = (width < 390 ? 10 : 100);
     	let size = Math.floor((Math.random()*sizeVariant) + 1);
-		let x = 195;
+		let x = 120;
 		let y = Math.floor(Math.random() * Math.floor(width-size));
 		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
 		let color = '#'+Math.random().toString(16).slice(-6)
@@ -58,16 +57,20 @@ export default class Dot extends Component {
     	clearInterval(this.interval);
   }
 
-  showScore(event) {
-  	let size = parseInt(event.target.style.width, 10);
+
+
+  showScore(style) {
+  	let size = parseInt(style.width, 10);
   	let score = Math.ceil(Math.abs(1/size*100));
   	this.setState(prevState => ({
       counter: prevState.counter + score
     }));
   	this.props.total(this.state.counter);
-  	event.target.style.display = 'none';
-  	let mountNode = ReactDOM.findDOMNode(this.refs.dot);
-    let unmount = ReactDOM.unmountComponentAtNode(mountNode);
+  	let newCircles = this.state.circles.filter((el) =>  el !== style);
+  	this.setState({
+  		circles: newCircles
+  	})
+
   }
 
   render() {
@@ -75,7 +78,7 @@ export default class Dot extends Component {
       <div>
       	{
       		this.state.circles.map((style,i) =>
-        	<div key={i} style={style} onClick={this.showScore} ref='dot'/>
+        	<div key={i} style={style} onClick={() => this.showScore(style)}/>
     		)
     	}
       </div>
