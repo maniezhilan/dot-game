@@ -1,11 +1,16 @@
+#app {
+	height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    background-image: url('https://cdn.glitch.com/0fc5ab69-cce5-4083-b63b-151cb2ec36bd%2Fclouds_bg.jpg?1521693129404');
+}
+
 .wrapper {
-	width: auto;
-	height: auto;
 	display: grid;
 	grid-template-rows: 30% 10% auto;
 	grid-template-columns: auto;
 	grid-gap: 10px 5px;
-	background-color: black;
+	background-color: lightskyblue;
 }
 
 
@@ -30,6 +35,8 @@
 	color: white;
     margin: 10px;
     font-style: oblique;
+    display: flex;
+    justify-content: center;
 }
 .row3 {
 	grid-row: 3/3;
@@ -86,5 +93,8 @@ h1 {
   font-family: 'Poiret One', cursive;
   font-size:4em;
 }
+
+
+
 
 
