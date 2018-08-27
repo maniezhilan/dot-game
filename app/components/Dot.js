@@ -12,8 +12,8 @@ export default class Dot extends Component {
 
   circle(x, y, bgColor, size, speed, playState){
 		return {
-	      padding:10,
-	      margin:20,
+	      padding:'10px',
+	      margin:'20px',
 	      backgroundColor: bgColor,
 	      borderRadius: "50%",
 	      width:size,
@@ -59,14 +59,18 @@ export default class Dot extends Component {
 
 
 
-  showScore(event) {
-  	let size = parseInt(event.target.style.width, 10);
+  showScore(style) {
+  	let size = parseInt(style.width, 10);
   	let score = Math.ceil(Math.abs(1/size*100));
   	this.setState(prevState => ({
       counter: prevState.counter + score
     }));
   	this.props.total(this.state.counter);
-  	event.target.style.display = 'none';
+  	let newCircles = this.state.circles.filter((el) =>  el !== style);
+  	this.setState({
+  		circles: newCircles
+  	})
+
   }
 
   render() {
@@ -74,7 +78,7 @@ export default class Dot extends Component {
       <div>
       	{
       		this.state.circles.map((style,i) =>
-        	<div key={i} style={style} onClick={this.showScore}/>
+        	<div key={i} style={style} onClick={() => this.showScore(style)}/>
     		)
     	}
       </div>

@@ -24,6 +24,7 @@ const config = {
   resolve: {
     extensions: ['.css', '.js', '.jsx']
   },
+
 	module : {
 		 rules : [
 				{

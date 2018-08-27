@@ -139,11 +139,11 @@ var Dot = function (_Component) {
   }
 
   _createClass(Dot, [{
-    key: "circle",
+    key: 'circle',
     value: function circle(x, y, bgColor, size, speed, playState) {
       return {
-        padding: 10,
-        margin: 20,
+        padding: '10px',
+        margin: '20px',
         backgroundColor: bgColor,
         borderRadius: "50%",
         width: size,
@@ -160,7 +160,7 @@ var Dot = function (_Component) {
       };
     }
   }, {
-    key: "createStyle",
+    key: 'createStyle',
     value: function createStyle() {
       var width = document.getElementById('app').clientWidth;
       var sizeVariant = width < 390 ? 10 : 100;
@@ -173,7 +173,7 @@ var Dot = function (_Component) {
       return this.circle(x, y, color, size, speed, playState);
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
@@ -186,14 +186,14 @@ var Dot = function (_Component) {
       }, 1000);
     }
   }, {
-    key: "componentWillUnmount",
+    key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       clearInterval(this.interval);
     }
   }, {
-    key: "showScore",
-    value: function showScore(event) {
-      var size = parseInt(event.target.style.width, 10);
+    key: 'showScore',
+    value: function showScore(style) {
+      var size = parseInt(style.width, 10);
       var score = Math.ceil(Math.abs(1 / size * 100));
       this.setState(function (prevState) {
         return {
@@ -201,18 +201,28 @@ var Dot = function (_Component) {
         };
       });
       this.props.total(this.state.counter);
-      event.target.style.display = 'none';
+      console.log(style);
+      console.log('orig', this.state.circles);
+      var newCircles = this.state.circles.filter(function (el) {
+        return el !== style;
+      });
+      console.log('new', newCircles);
+      this.setState({
+        circles: newCircles
+      });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this3 = this;
 
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
         this.state.circles.map(function (style, i) {
-          return _react2.default.createElement("div", { key: i, style: style, onClick: _this3.showScore });
+          return _react2.default.createElement('div', { key: i, style: style, onClick: function onClick() {
+              return _this3.showScore(style);
+            } });
         })
       );
     }
@@ -234,8 +244,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Dot, "Dot", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
-  reactHotLoader.register(_default, "default", "/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js");
+  reactHotLoader.register(Dot, 'Dot', '/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js');
+  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js');
   leaveModule(module);
 })();
 
