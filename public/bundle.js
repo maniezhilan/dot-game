@@ -139,12 +139,19 @@ var Dot = function (_Component) {
   }
 
   _createClass(Dot, [{
+    key: 'getRandomInt',
+    value: function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+  }, {
     key: 'circle',
-    value: function circle(x, y, bgColor, size, speed, playState) {
+    value: function circle(x, y, size, img, speed, playState) {
       return {
+        backgroundImage: img,
         padding: '10px',
         margin: '20px',
-        backgroundColor: bgColor,
         borderRadius: "50%",
         width: size,
         height: size,
@@ -154,29 +161,36 @@ var Dot = function (_Component) {
         animationDuration: speed,
         animationName: 'slidein',
         animationTimingFunction: 'linear',
-        animationIterationCount: 'infinite',
+        animationIterationCount: 1,
         animationDelay: '0s',
-        animationPlayState: playState
+        animationPlayState: playState,
+        backgroundRepeat: 'no-repeat',
+        animationFillMode: 'forwards',
+        hover: {
+          cursor: "pointer"
+        }
       };
     }
   }, {
     key: 'createStyle',
     value: function createStyle() {
       var width = document.getElementById('app').clientWidth;
-      var sizeVariant = width < 390 ? 10 : 100;
-      var size = Math.floor(Math.random() * sizeVariant + 1);
+      var height = document.getElementById('app').clientHeight;
+      var size = this.getRandomInt(20, 100);
+      console.log(size);
       var x = 120;
-      var y = Math.floor(Math.random() * Math.floor(width - size));
+      var y = Math.floor(Math.random() * Math.ceil(width - size)); //FIXME:
       var speed = this.props.speed === '' ? '10s' : this.props.speed + 's';
-      var color = '#' + Math.random().toString(16).slice(-6);
+      var img = "url(https://vignette.wikia.nocookie.net/battlefordreamisland/images/e/ec/Bomby_intro.png/revision/latest/scale-to-width-down/" + size + "?cb=20171217195913)";
       var playState = this.props.isToggleOn ? 'running' : 'paused';
-      return this.circle(x, y, color, size, speed, playState);
+      return this.circle(x, y, size, img, speed, playState);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
+      window.addEventListener("isBottom", this.isBottom);
       this.interval = setInterval(function () {
         var style = _this2.createStyle();
         _this2.setState({ circleStyle: style });
@@ -188,7 +202,17 @@ var Dot = function (_Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+      window.removeEventListener("isBottom", this.isBottom);
       clearInterval(this.interval);
+    }
+  }, {
+    key: 'isBottom',
+    value: function isBottom(el) {
+      //console.log('isBottom---',el);
+      if (el) {
+        //console.log(el.offsetHeight,window.innerHeight);
+        //console.log('isBottom---',el.getBoundingClientRect().height, window.innerHeight);
+      }
     }
   }, {
     key: 'showScore',
@@ -217,7 +241,7 @@ var Dot = function (_Component) {
         'div',
         null,
         this.state.circles.map(function (style, i) {
-          return _react2.default.createElement('div', { key: i, style: style, onClick: function onClick() {
+          return _react2.default.createElement('div', { key: i, ref: _this3.isBottom, style: style, onClick: function onClick() {
               return _this3.showScore(style);
             } });
         })
@@ -241,8 +265,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Dot, 'Dot', '/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js');
-  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Dot.js');
+  reactHotLoader.register(Dot, 'Dot', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js');
+  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Dot.js');
   leaveModule(module);
 })();
 
@@ -315,12 +339,13 @@ var SpeedSlider = function (_Component) {
       this.setState({
         value: value
       });
+      this.props.handlerFromParant(this.state.value);
     }
   }, {
     key: 'handleChangeReverse',
-    value: function handleChangeReverse(value) {
+    value: function handleChangeReverse(reverseValue) {
       this.setState({
-        reverseValue: value
+        reverseValue: reverseValue
       });
       this.props.handlerFromParant(this.state.reverseValue);
     }
@@ -340,9 +365,9 @@ var SpeedSlider = function (_Component) {
         'div',
         { className: 'slider', style: { pointerEvents: this.props.disabled ? 'none' : '' } },
         _react2.default.createElement(_reactRangeslider2.default, {
-          min: 1,
-          max: 10,
-          value: reverseValue,
+          min: 10,
+          max: 1,
+          reverseValue: reverseValue,
           reverse: true,
           onChange: this.handleChangeReverse.bind(this)
         }),
@@ -373,8 +398,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(SpeedSlider, 'SpeedSlider', '/Users/mani/code/github/coding-interview/dot-game/app/components/SpeedSlider.js');
-  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/SpeedSlider.js');
+  reactHotLoader.register(SpeedSlider, 'SpeedSlider', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/SpeedSlider.js');
+  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/SpeedSlider.js');
   leaveModule(module);
 })();
 
@@ -524,8 +549,8 @@ exports.default = _default;
     return;
   }
 
-  reactHotLoader.register(Toggle, 'Toggle', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
-  reactHotLoader.register(_default, 'default', '/Users/mani/code/github/coding-interview/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(Toggle, 'Toggle', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
+  reactHotLoader.register(_default, 'default', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/components/Toggle.js');
   leaveModule(module);
 })();
 
@@ -614,7 +639,7 @@ var App = function (_React$Component) {
     return;
   }
 
-  reactHotLoader.register(App, 'App', '/Users/mani/code/github/coding-interview/dot-game/app/index.jsx');
+  reactHotLoader.register(App, 'App', '/Users/jzqqnt/Documents/Development/pocs/dot-game/app/index.jsx');
   leaveModule(module);
 })();
 

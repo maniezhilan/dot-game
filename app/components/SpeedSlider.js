@@ -20,11 +20,12 @@ export default class SpeedSlider extends Component {
     this.setState({
       value: value
     })
+    this.props.handlerFromParant(this.state.value);
   };
 
-  handleChangeReverse(value){
+  handleChangeReverse(reverseValue){
     this.setState({
-      reverseValue: value
+      reverseValue: reverseValue
     })
     this.props.handlerFromParant(this.state.reverseValue);
   }
@@ -38,9 +39,9 @@ export default class SpeedSlider extends Component {
     return (
       <div className='slider' style={{pointerEvents: this.props.disabled ? 'none': ''}}>
         <Slider
-          min={1}
-          max={10}
-          value={reverseValue}
+          min={10}
+          max={1}
+          reverseValue={reverseValue}
           reverse={true}
           onChange={this.handleChangeReverse.bind(this)}
         />

@@ -10,11 +10,17 @@ export default class Dot extends Component {
     this.showScore = this.showScore.bind(this);
   }
 
-  circle(x, y, bgColor, size, speed, playState){
+  getRandomInt(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+  circle(x, y, size, img, speed, playState){
 		return {
+	      backgroundImage: img,
 	      padding:'10px',
 	      margin:'20px',
-	      backgroundColor: bgColor,
 	      borderRadius: "50%",
 	      width:size,
 	      height:size,
@@ -24,25 +30,32 @@ export default class Dot extends Component {
 	      animationDuration: speed,
 	  	  animationName: 'slidein',
 	  	  animationTimingFunction: 'linear',
-	  	  animationIterationCount: 'infinite',
+	  	  animationIterationCount: 1,
 	  	  animationDelay: '0s',
-	  	  animationPlayState: playState
-	    }
+	  	  animationPlayState: playState,
+	  	  backgroundRepeat: 'no-repeat',
+	  	  animationFillMode: 'forwards',
+	  	  hover: {
+     		 cursor: "pointer"
+    	   }
+    	}
 	}
 
 	createStyle(){
-		let width = document.getElementById('app').clientWidth;
-    	let sizeVariant = (width < 390 ? 10 : 100);
-    	let size = Math.floor((Math.random()*sizeVariant) + 1);
+		const width = document.getElementById('app').clientWidth;
+		const height = document.getElementById('app').clientHeight;
+    	let size = this.getRandomInt(20,100);
+    	console.log(size);
 		let x = 120;
-		let y = Math.floor(Math.random() * Math.floor(width-size));
+		let y = Math.floor(Math.random() * Math.ceil(width-size)); //FIXME:
 		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
-		let color = '#'+Math.random().toString(16).slice(-6)
+		let img = "url(https://vignette.wikia.nocookie.net/battlefordreamisland/images/e/ec/Bomby_intro.png/revision/latest/scale-to-width-down/"+size+"?cb=20171217195913)"
 		let playState = (this.props.isToggleOn ? 'running' : 'paused');
-		return this.circle(x, y, color, size, speed, playState);
+		return this.circle(x, y, size, img, speed, playState);
 	}
 
   componentDidMount() {
+  		window.addEventListener("isBottom", this.isBottom);
 	    this.interval = setInterval(() => {
     	let style = this.createStyle();
 	    this.setState({circleStyle: style });
@@ -54,9 +67,17 @@ export default class Dot extends Component {
   }
 
   componentWillUnmount() {
+  		window.removeEventListener("isBottom", this.isBottom);
     	clearInterval(this.interval);
   }
 
+  isBottom(el) {
+  		//console.log('isBottom---',el);
+  		if(el){
+  			//console.log(el.offsetHeight,window.innerHeight);
+  			//console.log('isBottom---',el.getBoundingClientRect().height, window.innerHeight);
+  		}
+  }
 
 
   showScore(style) {
@@ -78,7 +99,7 @@ export default class Dot extends Component {
       <div>
       	{
       		this.state.circles.map((style,i) =>
-        	<div key={i} style={style} onClick={() => this.showScore(style)}/>
+	        	<div key={i}  ref={this.isBottom} style={style} onClick={() => this.showScore(style)}/>
     		)
     	}
       </div>
