@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Slider from 'react-rangeslider';
 
 export default class Dot extends Component {
   constructor(props) {
     super(props);
     this.state = {circleStyle : {},
 		circles: [],
-		counter: 1
+		counter: 1,
+		value: 10,
+        reverseValue: 8
 	};
     this.showScore = this.showScore.bind(this);
   }
@@ -36,7 +39,8 @@ export default class Dot extends Component {
     	let size = Math.floor((Math.random()*sizeVariant) + 1);
 		let x = 120;
 		let y = Math.floor(Math.random() * Math.floor(width-size));
-		let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
+		//let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
+		let speed = this.state.reverseValue+'s';
 		let color = '#'+Math.random().toString(16).slice(-6)
 		let playState = (this.props.isToggleOn ? 'running' : 'paused');
 		return this.circle(x, y, color, size, speed, playState);
@@ -49,6 +53,7 @@ export default class Dot extends Component {
 	    this.setState({
   			circles: [...this.state.circles,this.state.circleStyle]
   		});
+
 	    }, 1000);
 
   }
@@ -57,6 +62,26 @@ export default class Dot extends Component {
     	clearInterval(this.interval);
   }
 
+  handleChangeReverse(value){
+  	console.log('handleChangeReverse---',value);
+    this.setState({
+      reverseValue: value
+    })
+    let speed = this.state.reverseValue;
+
+	    let newCircles = [];
+	    this.state.circles.map((circle) =>
+	    	{
+	    		let newCircle = Object.assign({},circle);
+	    		newCircle.animationDuration = speed+'s';
+
+	    		newCircles.push(newCircle);
+	    	}
+	    );
+	    this.setState({
+  			circles: newCircles
+  		})
+  }
 
 
   showScore(style) {
@@ -76,7 +101,16 @@ export default class Dot extends Component {
   render() {
     return (
       <div>
+        <Slider
+          min={1}
+          max={10}
+          value={this.state.reverseValue}
+          reverse={true}
+          onChange={this.handleChangeReverse.bind(this)}
+        />
+
       	{
+
       		this.state.circles.map((style,i) =>
         	<div key={i} style={style} onClick={() => this.showScore(style)}/>
     		)

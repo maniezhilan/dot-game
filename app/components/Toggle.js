@@ -46,11 +46,9 @@ export default class Toggle extends Component {
 	              {this.state.isToggleOn ? 'Stop' : 'Start'}
 	            </button>
             </div>
-            <div className='row2'>
-            	<SpeedSlider handlerFromParant={this.handleChange}/>
-            </div>
+
             <div className='row3'>
-            	{this.state.isToggleOn ? <Dot  isToggleOn={this.state.isToggleOn} speed={this.state.fromChild} total={this.showScore}/> : '' }
+            	{this.state.isToggleOn ? <Dot  isToggleOn={this.state.isToggleOn} total={this.showScore}/> : '' }
             </div>
         </div>
       )

@@ -112,6 +112,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRangeslider = __webpack_require__(/*! react-rangeslider */ "./node_modules/react-rangeslider/lib/index.js");
+
+var _reactRangeslider2 = _interopRequireDefault(_reactRangeslider);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -132,7 +136,9 @@ var Dot = function (_Component) {
 
     _this.state = { circleStyle: {},
       circles: [],
-      counter: 1
+      counter: 1,
+      value: 10,
+      reverseValue: 8
     };
     _this.showScore = _this.showScore.bind(_this);
     return _this;
@@ -167,7 +173,8 @@ var Dot = function (_Component) {
       var size = Math.floor(Math.random() * sizeVariant + 1);
       var x = 120;
       var y = Math.floor(Math.random() * Math.floor(width - size));
-      var speed = this.props.speed === '' ? '10s' : this.props.speed + 's';
+      //let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
+      var speed = this.state.reverseValue + 's';
       var color = '#' + Math.random().toString(16).slice(-6);
       var playState = this.props.isToggleOn ? 'running' : 'paused';
       return this.circle(x, y, color, size, speed, playState);
@@ -189,6 +196,26 @@ var Dot = function (_Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       clearInterval(this.interval);
+    }
+  }, {
+    key: 'handleChangeReverse',
+    value: function handleChangeReverse(value) {
+      console.log('handleChangeReverse---', value);
+      this.setState({
+        reverseValue: value
+      });
+      var speed = this.state.reverseValue;
+
+      var newCircles = [];
+      this.state.circles.map(function (circle) {
+        var newCircle = Object.assign({}, circle);
+        newCircle.animationDuration = speed + 's';
+
+        newCircles.push(newCircle);
+      });
+      this.setState({
+        circles: newCircles
+      });
     }
   }, {
     key: 'showScore',
@@ -216,6 +243,13 @@ var Dot = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(_reactRangeslider2.default, {
+          min: 1,
+          max: 10,
+          value: this.state.reverseValue,
+          reverse: true,
+          onChange: this.handleChangeReverse.bind(this)
+        }),
         this.state.circles.map(function (style, i) {
           return _react2.default.createElement('div', { key: i, style: style, onClick: function onClick() {
               return _this3.showScore(style);
@@ -496,13 +530,8 @@ var Toggle = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'row2' },
-          _react2.default.createElement(_SpeedSlider2.default, { handlerFromParant: this.handleChange })
-        ),
-        _react2.default.createElement(
-          'div',
           { className: 'row3' },
-          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, speed: this.state.fromChild, total: this.showScore }) : ''
+          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, total: this.showScore }) : ''
         )
       );
     }
