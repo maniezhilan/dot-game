@@ -11,9 +11,9 @@ export default class Toggle extends Component {
       fromChild: '',
       total: 0
     };
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
     this.showScore = this.showScore.bind(this);
-    this.buttonClick = this.buttonClick.bind(this);
+    //this.buttonClick = this.buttonClick.bind(this);
   }
 
   handleChange(data) {
@@ -41,14 +41,10 @@ export default class Toggle extends Component {
             	<div className='btn btn-yellow'> Score: {this.state.total}
             	</div>
             </div>
-            <div className='col2-row1'>
-	            <button className={this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green'} onClick={this.buttonClick}>
-	              {this.state.isToggleOn ? 'Stop' : 'Start'}
-	            </button>
-            </div>
+
 
             <div className='row3'>
-            	{this.state.isToggleOn ? <Dot  isToggleOn={this.state.isToggleOn} total={this.showScore}/> : '' }
+            	<Dot  total={this.showScore}/>
             </div>
         </div>
       )

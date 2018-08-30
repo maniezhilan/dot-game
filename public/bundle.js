@@ -112,6 +112,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _reactRangeslider = __webpack_require__(/*! react-rangeslider */ "./node_modules/react-rangeslider/lib/index.js");
 
 var _reactRangeslider2 = _interopRequireDefault(_reactRangeslider);
@@ -138,9 +142,11 @@ var Dot = function (_Component) {
       circles: [],
       counter: 1,
       value: 10,
-      reverseValue: 8
+      reverseValue: 8,
+      isToggleOn: false
     };
     _this.showScore = _this.showScore.bind(_this);
+    _this.buttonClick = _this.buttonClick.bind(_this);
     return _this;
   }
 
@@ -167,16 +173,16 @@ var Dot = function (_Component) {
     }
   }, {
     key: 'createStyle',
-    value: function createStyle() {
+    value: function createStyle(speed) {
       var width = document.getElementById('app').clientWidth;
       var sizeVariant = width < 390 ? 10 : 100;
       var size = Math.floor(Math.random() * sizeVariant + 1);
       var x = 120;
       var y = Math.floor(Math.random() * Math.floor(width - size));
       //let speed = (this.props.speed === '' ? '10s' : this.props.speed+'s');
-      var speed = this.state.reverseValue + 's';
+      //let speed = this.state.reverseValue+'s';
       var color = '#' + Math.random().toString(16).slice(-6);
-      var playState = this.props.isToggleOn ? 'running' : 'paused';
+      var playState = this.state.isToggleOn ? 'running' : 'paused';
       return this.circle(x, y, color, size, speed, playState);
     }
   }, {
@@ -185,10 +191,21 @@ var Dot = function (_Component) {
       var _this2 = this;
 
       this.interval = setInterval(function () {
-        var style = _this2.createStyle();
+        var speed = _this2.state.reverseValue;
+        var style = _this2.createStyle(speed);
         _this2.setState({ circleStyle: style });
         _this2.setState({
           circles: [].concat(_toConsumableArray(_this2.state.circles), [_this2.state.circleStyle])
+        });
+
+        var newCircles = [];
+        _this2.state.circles.map(function (circle) {
+          var newCircle = Object.assign({}, circle);
+          newCircle.animationDuration = speed + 's';
+          newCircles.push(newCircle);
+        });
+        _this2.setState({
+          circles: newCircles
         });
       }, 1000);
     }
@@ -200,21 +217,8 @@ var Dot = function (_Component) {
   }, {
     key: 'handleChangeReverse',
     value: function handleChangeReverse(value) {
-      console.log('handleChangeReverse---', value);
       this.setState({
         reverseValue: value
-      });
-      var speed = this.state.reverseValue;
-
-      var newCircles = [];
-      this.state.circles.map(function (circle) {
-        var newCircle = Object.assign({}, circle);
-        newCircle.animationDuration = speed + 's';
-
-        newCircles.push(newCircle);
-      });
-      this.setState({
-        circles: newCircles
       });
     }
   }, {
@@ -236,6 +240,15 @@ var Dot = function (_Component) {
       });
     }
   }, {
+    key: 'buttonClick',
+    value: function buttonClick() {
+      this.setState(function (prevState) {
+        return {
+          isToggleOn: !prevState.isToggleOn
+        };
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
@@ -243,6 +256,20 @@ var Dot = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'div',
+          { className: 'col2-row1' },
+          _react2.default.createElement(
+            'button',
+            { className: 'btn btn-green', onClick: this.buttonClick },
+            'Start'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'btn btn-yellow', onClick: this.buttonClick },
+            'Pause'
+          )
+        ),
         _react2.default.createElement(_reactRangeslider2.default, {
           min: 1,
           max: 10,
@@ -474,9 +501,9 @@ var Toggle = function (_Component) {
       fromChild: '',
       total: 0
     };
-    _this.handleChange = _this.handleChange.bind(_this);
+    //this.handleChange = this.handleChange.bind(this);
     _this.showScore = _this.showScore.bind(_this);
-    _this.buttonClick = _this.buttonClick.bind(_this);
+    //this.buttonClick = this.buttonClick.bind(this);
     return _this;
   }
 
@@ -521,17 +548,8 @@ var Toggle = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'col2-row1' },
-          _react2.default.createElement(
-            'button',
-            { className: this.state.isToggleOn ? 'btn btn-red' : 'btn btn-green', onClick: this.buttonClick },
-            this.state.isToggleOn ? 'Stop' : 'Start'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
           { className: 'row3' },
-          this.state.isToggleOn ? _react2.default.createElement(_Dot2.default, { isToggleOn: this.state.isToggleOn, total: this.showScore }) : ''
+          _react2.default.createElement(_Dot2.default, { total: this.showScore })
         )
       );
     }
